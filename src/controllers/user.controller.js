@@ -13,9 +13,8 @@ export class UserController {
     }
 
     async getById(req, res){
-        const {uid} = req.params;
         try {
-            const user = await userDao.getById(uid);
+            const user = await userDao.getById(req.params.uid);
             res.send({status: "success", data: user});
         } catch (error) {
             res.status(500).json({message: error.message});
@@ -36,7 +35,7 @@ export class UserController {
         const user = req.body;
         try {
             const newUser = await userDao.create(user);
-            res.send({status: "success", data: newUser});
+            res.send({status: "success", data: newUser.data._id});
         } catch (error) {
             res.status(500).json({message: error.message});
         }
@@ -47,7 +46,7 @@ export class UserController {
         const user = req.body;
         try {
             const updatedUser = await userDao.update(uid, user);
-            res.send({status: "success", data: updatedUser});
+            res.send({status: "success", data: "Usuario actualizado correctamente"});
         } catch (error) {
             res.status(500).json({message: error.message});
         }

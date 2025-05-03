@@ -30,7 +30,6 @@ export class CartDao {
 
     async removePurchasedProducts(cartId, purchasedProducts) {
       try {
-          console.log("🔹 Eliminando productos comprados del carrito:", cartId, purchasedProducts);
   
           const cart = await CartModel.findById(cartId);
           if (!cart) {

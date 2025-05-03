@@ -5,18 +5,22 @@
   "main": "./src/server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon ./src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon ./src/server.js",
+    "test": "mocha tests/Carts.test.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "chai": "^5.2.0",
+    "mocha": "^11.1.0",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.1.0"
   },
   "dependencies": {
     "@faker-js/faker": "^9.6.0",
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
@@ -28,6 +32,8 @@
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
-    "uuid": "^11.0.5"
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "uuid": "^11.1.0"
   }
 }

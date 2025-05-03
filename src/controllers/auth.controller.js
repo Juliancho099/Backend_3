@@ -4,13 +4,16 @@ const register = async (req, res) => {
   };
   
   const login = (req, res) => {
+    if (!req.token) {
+      return res.status(400).json({ status: "error", message: "Token no generado" });
+    }
     const token = req.token;
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 7,
     });
   
-    res.json({ token });
+    res.json({status: "success", payload: "Inicio de sesión exitoso", data: req.user});
   };
   
   const logout = (req, res) => {

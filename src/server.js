@@ -2,6 +2,8 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import passport from "passport";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUI from "swagger-ui-express";
 
 // importando modulos de configuracion
 import { initializePassport } from "./config/passport.js";
@@ -10,8 +12,8 @@ import { CONFIG } from "./config/config.js"
 import { authRouter } from "./routes/sessions.routes.js";
 import { productRouter } from "./routes/product.routes.js";
 import { cartRouter } from "./routes/cart.routes.js";
-import { mocksRouter } from "./routes/mocks.routes.js";
-
+import { userRouter } from "./routes/users.routes.js";
+import { swaggerConfig } from "./config/swagger.js";
 const app = express();
 
 //middleware
@@ -21,6 +23,9 @@ app.use(cookieParser());
 initializePassport();
 app.use(passport.initialize());
 app.use(express.static("public"));
+
+const specs = swaggerJSDoc(swaggerConfig);
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 //routes
 
@@ -37,7 +42,7 @@ app.use("/api/current", passport.authenticate("jwt", {session:false}), async (re
     console.error(error);
 }
 });
-app.use("/api/mocks", mocksRouter);
+app.use("/api/users", userRouter);
 
 app.listen(CONFIG.PORT, () => {
     console.log(`Server running on port ${CONFIG.PORT}`);

@@ -5,6 +5,6 @@ export const userDto = joi.object({
     last_name: joi.string().min(4).max(30).required(),
     email: joi.string().email().required(),
     password: joi.string().min(8).max(30).required(),
-    role: joi.string().valid('admin', 'user').required(),
+    role: joi.string().valid('admin', 'user'),
     age: joi.number().integer().min(18).max(100).required()
 });

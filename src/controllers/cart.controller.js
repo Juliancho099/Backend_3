@@ -3,8 +3,6 @@ import { ProductDao } from "../dao/repositories/product.dao.js";
 import { Ticket } from "../dao/models/ticket.model.js";
 import mongoose from "mongoose";
 
-
-
 const cartDao = new CartDao();
 const productDao = new ProductDao();
 
@@ -26,8 +24,11 @@ export class CartController {
     const { cid } = req.params;
     try {
       const cart = await cartDao.getById(cid);
-      console.log("Carrito obtenido:", cart);
-      res.send({ status: "success", data: cart });
+      res.send({
+        status: "success",
+        message: "Carrito obtenido correctamente",
+        data: cart,
+      });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -40,22 +41,36 @@ export class CartController {
         return res.status(400).json({ message: "User not found" });
       }
       const newCart = {
+        _id: new mongoose.Types.ObjectId(),
         user: userId,
         products: [],
       };
-      const cart = await cartDao.create(newCart);
-      res.send({ status: "success", data: cart });
+      await cartDao.create(newCart);
+      res
+        .status(201)
+        .send({
+          status: "success",
+          message: "Carrito creado correctamente",
+          data: newCart._id.toString(),
+        });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
   }
 
   async update(req, res) {
-    const { id } = req.params;
+    const { cid } = req.params;
     const data = req.body;
     try {
-      const cart = await cartDao.update(id, data);
-      res.send({ status: "success", data: cart });
+      const cart = await cartDao.update(cid, data);
+      if (!cart) {
+        return res.status(404).json({ message: "Cart not found" });
+      }
+      res.send({
+        status: "success",
+        message: "Carrito actualizado correctamente",
+        data: cart,
+      });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -72,50 +87,48 @@ export class CartController {
   }
 
   async addProduct(req, res) {
+    const { cid, pid } = req.params;
+    const { products } = req.body;
     try {
-        const { cid, pid } = req.params;
-        const { products } = req.body;
-        const quantity = products?.[0]?.quantity;
+      const quantity = products?.[0]?.quantity;
 
-        if (!quantity || quantity <= 0) {
-            return res.status(400).json({ message: "Invalid quantity" });
-        }
+      if (!quantity || quantity <= 0) {
+        return res.status(400).json({ message: "Invalid quantity" });
+      }
 
-        const cart = await cartDao.getById(cid);
+      const cart = await cartDao.getById(cid);
 
-        if (!cart) {
-            return res.status(404).json({ message: "Cart not found" });
-        }
+      if (!cart) {
+        return res.status(404).json({ message: "Cart not found" });
+      }
 
-        const product = await productDao.getById(pid);
-        if (!product) {
-            return res.status(404).json({ message: "Product not found" });
-        }
+      const product = await productDao.getById(pid);
+      if (!product) {
+        return res.status(404).json({ message: "Product not found" });
+      }
 
-        cart.products = cart.products || [];
+      cart.products = cart.products || [];
 
-        const pidObjectId = new mongoose.Types.ObjectId(pid);
+      const pidObjectId = new mongoose.Types.ObjectId(pid);
 
-        const productIndex = cart.products.findIndex((p) => p.product.equals(pidObjectId));
+      const productIndex = cart.products.findIndex((p) =>
+        p.product.equals(pidObjectId)
+      );
 
-        if (productIndex !== -1) {
-            cart.products[productIndex].quantity += quantity;
-            console.log("🟢 Producto actualizado");
-        } else {
-            cart.products.push({ product: pidObjectId, quantity });
-        }
+      if (productIndex !== -1) {
+        cart.products[productIndex].quantity += quantity;
+      } else {
+        cart.products.push({ product: pidObjectId, quantity });
+      }
 
-        await cart.save(); 
+      await cart.save();
 
-        res.status(201).send({ status: "success", data: "Product added", cart });
-
+      res.status(201).send({ status: "success", message: "Producto agregado al carrito", data: cart });
     } catch (error) {
-        console.error("❌ Error en addProduct:", error);
-        res.status(500).json({ message: error.message });
+      console.error("❌ Error en addProduct:", error);
+      res.status(500).json({ message: error.message });
     }
-}
-
-  
+  }
 
   async purchaseCart(req, res) {
     try {
@@ -168,10 +181,9 @@ export class CartController {
       res.status(201).json({
         status: "success",
         message: "Compra finalizada",
-        ticket,
-        unAvailableProducts,
+        data:ticket,
+        deletedProducts: unAvailableProducts,
       });
-
     } catch (error) {
       console.error("❌ Error en purchaseCart:", error);
       res.status(500).json({ message: error.message });

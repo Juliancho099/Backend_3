@@ -1,0 +1,266 @@
+paths:
+  /api/products/:
+    get:
+      sumary: "Obtener todos los productos"
+      tags:
+        - Products
+      responses:
+        200:
+          description: "Productos obtenidos correctamente"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                    description: "Estado de la respuesta"
+                  payload:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Product"
+        404:
+          description: "No se encontraron productos"
+        500:
+          description: "Error interno del servidor"
+    post:
+      sumary: "Crear un nuevo producto"
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "Producto 1"
+                  description: "Título del producto"
+                description:
+                  type: string
+                  example: "Descripción del producto"
+                  description: "Descripción del producto"
+                code:
+                  type: string
+                  example: "NP11"
+                  description: "Código del producto"
+                price:
+                  type: number
+                  example: 100
+                  description: "Precio del producto"
+                status:
+                  type: boolean
+                  example: true
+                  description: "Estado del producto"
+                stock:
+                  type: number
+                  example: 100
+                  description: "Stock del producto"
+                category:
+                  type: string
+                  example: "Electrónicos"
+                  description: "Categoría del producto"
+                thumbnail:
+                  type: array
+                  example: ["https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"]
+                  description: "URL de la imagen del producto"
+      responses:
+        201:
+          description: "Producto creado correctamente"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                    description: "Estado de la respuesta"
+                  data:
+                    type: string
+                    example: "68032d3c9e6794cf3b9f0977"
+                    description: "ID del producto"
+        400:
+          description: "Error en los datos del producto"
+        500:
+          description: "Error interno del servidor"
+  /api/products/{pid}:
+    get:
+      sumary: "Obtener un producto por su ID"
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          type: string
+          description: "ID del producto"
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Producto obtenido correctamente"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                    description: "Estado de la respuesta"
+                  payload:
+                    type: object
+                    $ref: "#/components/schemas/Product"
+        404:
+          description: "No se encontró el producto"
+        500:
+          description: "Error interno del servidor"
+    put:
+      sumary: "Actualizar un producto por su ID"
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          type: string
+          description: "ID del producto"
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "Producto 1"
+                  description: "Título del producto"
+                description:
+                  type: string
+                  example: "Descripción del producto"
+                  description: "Descripción del producto"
+                code:
+                  type: string
+                  example: "NP11"
+                  description: "Código del producto"
+                price:
+                  type: number
+                  example: 100
+                  description: "Precio del producto"
+                status:
+                  type: boolean
+                  example: true
+                  description: "Estado del producto"
+                stock:
+                  type: number
+                  example: 100
+                  description: "Stock del producto"
+                category:
+                  type: string
+                  example: "Electrónicos"
+                  description: "Categoría del producto"
+                thumbnail:
+                  type: array
+                  example: ["https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"]
+                  description: "URL de la imagen del producto"
+      responses:
+        200:
+          description: "Producto actualizado correctamente"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                    description: "Estado de la respuesta"
+                  payload:
+                    type: object
+                    $ref: "#/components/schemas/Product"
+        400:
+          description: "Error en los datos del producto"
+        500:
+          description: "Error interno del servidor"
+    delete:
+      sumary: "Eliminar un producto por su ID"
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          type: string
+          description: "ID del producto"
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Producto eliminado correctamente"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                    description: "Estado de la respuesta"
+                  payload:
+                    type: string
+                    example: "Producto eliminado correctamente"
+                    description: "Mensaje de éxito"
+        500:
+          description: "Error interno del servidor"
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "666666666666666666666666"
+          description: "ID del producto"
+        title:
+          type: string
+          example: "Producto 1"
+          description: "Título del producto"
+        description:
+          type: string
+          example: "Descripción del producto"
+          description: "Descripción del producto"
+        code:
+          type: string
+          example: "NP11"
+          description: "Código del producto"
+        price:
+          type: number
+          example: 100
+          description: "Precio del producto"
+        status:
+          type: boolean
+          example: true
+          description: "Estado del producto"
+        stock:
+          type: number
+          example: 100
+          description: "Stock del producto"
+        category:
+          type: string
+          example: "Electrónicos"
+          description: "Categoría del producto"
+        thumbnail:
+          type: string
+          example: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
+          description: "URL de la imagen del producto"
+        _v:
+          type: integer
+          description: "Versión del producto"

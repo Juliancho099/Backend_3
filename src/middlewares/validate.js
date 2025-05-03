@@ -16,6 +16,6 @@ export function validateRegister (req, res, next) {
         return res.status(400).json({ message: info?.message || "Error en el registro" });
       }
   
-      res.status(201).json({ message: 'Usuario registrado con éxito', user });
+      res.status(201).json({status: "success", data: user._id});
     })(req, res, next);
   };

@@ -41,15 +41,26 @@ export class ProductDao {
 
     }
 
-    async create(product){
-        return await productosModel.create(product);
+    async create(product) {
+        try {
+            const newProduct = await productosModel.create(product);
+            return newProduct;
+        } catch (err) {
+            throw err; 
+        }
     }
+    
 
     async update(id, product){
         return await productosModel.findByIdAndUpdate(id, product, {new: true});
     }
 
     async delete(id){
-        return await productosModel.findByIdAndDelete(id);
+        try {
+            const deletedProduct = await productosModel.findByIdAndDelete(id);
+            return deletedProduct;
+        } catch (err) {
+            throw err;
+        }
     }
 }

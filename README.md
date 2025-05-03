@@ -1,31 +1,24 @@
-//ENTREGA BACKEND 3
+//ENTREGA FINAL BACKEND 3
 
-se entrega la continuacion del proyecto realizado desde backend 1.
+En este proyecto encontraras un crud para un ecommerce, este se estuvo manejando desde cursos anteriores a este, de igual manera dejo aclarado todo lo que pide la consigna.
 
-esta entrega sigue la consigna pero en vez de generar mascotas generamos productos, estos se integran a la base de datos.
+1.Se documento todas las rutas de products,users y sessions
+2.se testeo la ruta del carrito la cual puedes acceder con el comando pnpm test
+3. se crea una imagen de docker del proyecto la cual dejo el link a continuacion:
 
-los endpoints son : 
-users: /api/mockingUsers
-products:/api/mockingPorducts
-generarData: /api/generardata
+LINK: https://hub.docker.com/r/juliancho99/proyecto-ecommerce
 
+Dejo aqui el nombre de las 3 variables de entorno
 
-//Entrega Final Backend 2
-propyecto con funcionalidades nuevas segun lo solicitado
-si queres probar tenes el user admin:
-email:toscano21@gmail.com
-pass: 12345678
+PORT=8080
+DB_URI= "AQUI PODES COLOCAR EL LINK DE TU BASE DE DATOS"
+DB_NAME= "Aqui el nombre que le quieras dar a la base de datos"
 
-User:
-email:toscano23@gmail.com
-pass: 12345678
+ACLARACION:
 
+este proyecto se creo con PNPM asi que para instalar sus dependencias es necesario usar pnpm i. 
 
-// Primer entrega backend 2 de julian toscano.
-
-En este proyecto encontraras un sistema de login con diferentes estrategias de login y registro.
-Encontraras una estrategia de passport para verificar la existencia de un usuario mediante un token, si bien es una continuacion de un proyecto del curso tomado anteriormente, este lo quise hacer nuevamente ya que en el anterior ubieron cosas que no me gustaron y que estoy mejorando, aclaro tambien que aun faltan cositas para añadir, pero se entrega segun lo que se pide en las consignas.
-
+Quedo atento a comentarios y/o solucuibes a errores que se encuentren
 
 
     
